@@ -65,11 +65,7 @@ namespace StudentRegisterApplication.Controller
 
         public Student HandleSearchInputByInt(int searchPhrase)
         {
-            if (_studentRepository.GetById(searchPhrase) != null)
-            {
-                return _studentRepository.GetById(searchPhrase);
-            }
-            return null;
+            return _studentRepository.GetById(searchPhrase);
         }
 
         public List<Student> HandleSearchInputByString(string searchPhrase)
