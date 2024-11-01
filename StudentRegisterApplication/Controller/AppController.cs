@@ -36,6 +36,8 @@ namespace StudentRegisterApplication.Controller
                 Address = new Address(street, city, postalCode),
                 ProgrammingKnowledge = skills
             });
+             // gick det här bra är dettta okej att savea?
+            _studentRepository.Save();
         }
 
         public void HandleEditStudentMenu(Student student, string value, ChangeValueOptions options)
@@ -61,6 +63,7 @@ namespace StudentRegisterApplication.Controller
                     break;
             }
             _studentRepository.Edit(student);
+            _studentRepository.Save();
         }
 
         public Student HandleSearchInputByInt(int searchPhrase)

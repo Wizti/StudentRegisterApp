@@ -35,8 +35,9 @@ namespace StudentRegisterApplication.View.ChangeStudent
             }
 
             IfNullorNothing(input);
-            Ifstring(input);
             IfDigit(input);
+            Ifstring(input);
+            
         }
         #region InputOutcomes
         private void IfDigit(string input)

@@ -16,19 +16,16 @@ namespace StudentRegisterApplication.Repository
         public void Create(Student student)
         {
             _context.Add(student);
-            _context.SaveChanges();
         }
 
         public void Delete(Student student)
         {
             _context.Remove(student);
-            _context.SaveChanges();
         }
 
         public void Edit(Student student)
         {
             _context.Update(student);
-            _context.SaveChanges();
         }
         public List<Student> GetByPhrase(string phrase)
         {
@@ -47,6 +44,10 @@ namespace StudentRegisterApplication.Repository
         public List<Student> GetAll()
         {
             return [.. _context.Students.Include(a => a.Address).Include(p => p.ProgrammingKnowledge) ];
+        }
+        public void Save()
+        {
+            _context.SaveChanges();
         }
 
     }
