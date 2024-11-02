@@ -36,7 +36,6 @@ namespace StudentRegisterApplication.Controller
                 Address = new Address(street, city, postalCode),
                 ProgrammingKnowledge = skills
             });
-             // gick det här bra är dettta okej att savea?
             _studentRepository.Save();
         }
 
