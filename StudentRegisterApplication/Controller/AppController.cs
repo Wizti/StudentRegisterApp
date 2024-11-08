@@ -2,22 +2,28 @@
 using StudentRegisterApplication.Model;
 using StudentRegisterApplication.Repository;
 using StudentRegisterApplication.View;
+using StudentRegisterApplication.View.Login;
 
 namespace StudentRegisterApplication.Controller
 {
     internal class AppController
-    {       
+    {
         private MenuBase _menu;
         private readonly StudentRepository _studentRepository;
 
         public AppController(StudentRepository studentRepository)
-        {           
+        {
             _menu = new MainMenu(this);
             _studentRepository = studentRepository;
         }
 
         public void Run()
         {
+            if (!_studentRepository.IsAnyLoggedIn())
+            {
+                _menu = new LoginMenu(this);
+                _menu.ShowMenu();
+            }
             _menu.ShowMenu();
         }
 
@@ -25,6 +31,21 @@ namespace StudentRegisterApplication.Controller
         {
             _menu = menu;
             Run();
+        }
+
+        public bool HandleLogin(string username, string password)
+        {
+            SystemUser user = _studentRepository.GetAllSystemUsers().Where(u => u.UserName == username).FirstOrDefault();
+            if (user == null)
+            {
+                return false;
+            }
+            if (user.PassWord == password)
+            {
+                user.LoggedIn = true;
+                _studentRepository.Update(user);
+            }
+            return true;
         }
 
         public void HandleCreateStudentMenu(string firstName, string lastName, string street, string city, int postalCode, List<ProgrammingKnowledge> skills)
@@ -36,7 +57,6 @@ namespace StudentRegisterApplication.Controller
                 Address = new Address(street, city, postalCode),
                 ProgrammingKnowledge = skills
             });
-            _studentRepository.Save();
         }
 
         public void HandleEditStudentMenu(Student student, string value, ChangeValueOptions options)
@@ -62,7 +82,6 @@ namespace StudentRegisterApplication.Controller
                     break;
             }
             _studentRepository.Edit(student);
-            _studentRepository.Save();
         }
 
         public Student HandleSearchInputByInt(int searchPhrase)
@@ -93,6 +112,22 @@ namespace StudentRegisterApplication.Controller
         public Student GetFullStudentByID(int id)
         {
             return _studentRepository.GetFullById(id);
+        }
+
+        public SystemUser GetLoggedInSystemUser()
+        {
+            return _studentRepository.GetSystemUser();
+        }
+
+        public void Quit()
+        {
+            var users = _studentRepository.GetAllSystemUsers().Where(l => l.LoggedIn);
+
+            foreach (var user in users)
+            {
+                user.LoggedIn = false;
+                _studentRepository.Update(user);
+            }
         }
     }
 }

@@ -30,6 +30,12 @@ namespace StudentRegisterApplication.Repository
             _context.Update(student);
             Save();
         }
+
+        public void Update(SystemUser user)
+        {
+            _context.Update(user);
+            Save();
+        }
         public List<Student> GetByPhrase(string phrase)
         {
             return _context.Students.Where(f => f.FirstName.Contains(phrase) || f.LastName.Contains(phrase) || f.Address.City.Contains(phrase) || f.Address.Street.Contains(phrase) || f.ProgrammingKnowledge.Any(k => k.Language.Contains(phrase))).ToList();
@@ -47,6 +53,21 @@ namespace StudentRegisterApplication.Repository
         public List<Student> GetAll()
         {
             return [.. _context.Students.Include(a => a.Address).Include(p => p.ProgrammingKnowledge) ];
+        }
+
+        public List<SystemUser> GetAllSystemUsers()
+        {
+            return [.. _context.SystemUsers ];
+        }
+
+        public bool IsAnyLoggedIn()
+        {
+            return _context.SystemUsers.Any(s => s.LoggedIn);
+        }
+
+        public SystemUser GetSystemUser()
+        {
+            return _context.SystemUsers.Where(l => l.LoggedIn).Include(u => u.UserRole).First();
         }
         public void Save()
         {

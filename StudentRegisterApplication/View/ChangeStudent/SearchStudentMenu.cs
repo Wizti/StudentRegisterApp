@@ -118,6 +118,6 @@ namespace StudentRegisterApplication.View.ChangeStudent
                 Console.ReadLine();
                 ShowListOfStudentsSearch(students);
             }
-        }
+        }        
     }
 }

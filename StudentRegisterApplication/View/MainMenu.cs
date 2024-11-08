@@ -33,15 +33,15 @@ namespace StudentRegisterApplication.View
             switch ((InputReader.GetInt().ToString()))
             {
                 case "1":
-                    _controller.ChangeMenu(new CreateStudentMenu(_controller));
+                    HandleCreateAccess();
                     break;
 
                 case "2":
-                    _controller.ChangeMenu(new SearchStudentMenu(_controller));
+                    HandleEditAccess();
                     break;
 
                 case "3":
-                    _controller.ChangeMenu(new DeleteStudentMenu(_controller));
+                    HandleDeleteAccess();
                     break;
 
                 case "4":
@@ -53,11 +53,56 @@ namespace StudentRegisterApplication.View
                     break;
 
                 default:
+                    ShowMenu();
                     break;
             }
         }
+
+        public void HandleCreateAccess()
+        {
+            if(_controller.GetLoggedInSystemUser().UserRole.AddRemove)
+            {
+                _controller.ChangeMenu(new CreateStudentMenu(_controller));
+            }
+            else
+            {
+                Color.Error("You dont have access to create new student. Enter to return ->");
+                Console.ReadLine();
+                ShowMenu();
+            }
+        }
+
+        public void HandleDeleteAccess()
+        {
+            if(_controller.GetLoggedInSystemUser().UserRole.AddRemove)
+            {
+                _controller.ChangeMenu(new DeleteStudentMenu(_controller));
+            }
+            else
+            {
+                Color.Error("You dont have access to delete student. Enter to return ->");
+                Console.ReadLine();
+                ShowMenu();
+            }
+        }
+
+        public void HandleEditAccess()
+        {
+            if (_controller.GetLoggedInSystemUser().UserRole.Edit)
+            {
+                _controller.ChangeMenu(new SearchStudentMenu(_controller));
+            }
+            else
+            {
+                Color.Error("You dont have access to edit student. Enter to return ->");
+                Console.ReadLine();
+                _controller.ChangeMenu(new MainMenu(_controller));
+            }
+        }
+
         public void Quit()
         {
+            _controller.Quit();
             Console.WriteLine("\nGoodbye, have a nice day!");
             Environment.Exit(0);
         }

@@ -8,7 +8,8 @@
         public int StudentId { get; set; }
         public Student? Student { get; set; }
 
-        public ProgrammingKnowledge() { }
+        public ProgrammingKnowledge()
+        { }
         public ProgrammingKnowledge(string language, string skillLevel)
         {
             Language = language;

@@ -1,6 +1,7 @@
 ﻿using StudentRegisterApplication.Controller;
 using StudentRegisterApplication.Helpers;
 using StudentRegisterApplication.Model;
+using StudentRegisterApplication.View.CreateStudent;
 
 namespace StudentRegisterApplication.View.ChangeStudent
 {
@@ -53,7 +54,7 @@ namespace StudentRegisterApplication.View.ChangeStudent
                 default:
                     break;
             }
-        }
+        }        
 
         #region ChangeName
         public void ChangeFirstName()
