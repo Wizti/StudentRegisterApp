@@ -16,16 +16,19 @@ namespace StudentRegisterApplication.Repository
         public void Create(Student student)
         {
             _context.Add(student);
+            Save();
         }
 
         public void Delete(Student student)
         {
             _context.Remove(student);
+            Save();
         }
 
         public void Edit(Student student)
         {
             _context.Update(student);
+            Save();
         }
         public List<Student> GetByPhrase(string phrase)
         {
