@@ -5,7 +5,6 @@
         public int SystemUserId { get; set; }
         public string UserName { get; set; }
         public string PassWord { get; set; }
-        public bool LoggedIn { get; set; }
         public UserRole UserRole { get; set; }
 
         public SystemUser()

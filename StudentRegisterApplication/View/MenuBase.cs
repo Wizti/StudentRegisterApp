@@ -10,7 +10,6 @@ namespace StudentRegisterApplication.View
         {
             _controller = controller;
         }
-
         public abstract void ShowMenu();
     }
 }

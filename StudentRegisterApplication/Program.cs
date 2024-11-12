@@ -9,7 +9,7 @@ namespace StudentRegisterApplication
     {
         static void Main(string[] args)
         {
-            AppController appController = new AppController(new StudentRepository());
+            AppController appController = new AppController(new StudentRepository(), new SystemUserRepository());
             appController.Run();
         }
     }

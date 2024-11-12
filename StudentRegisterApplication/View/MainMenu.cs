@@ -1,5 +1,6 @@
 ﻿using StudentRegisterApplication.Controller;
 using StudentRegisterApplication.Helpers;
+using StudentRegisterApplication.Model;
 using StudentRegisterApplication.View.ChangeStudent;
 using StudentRegisterApplication.View.CreateStudent;
 using StudentRegisterApplication.View.DeleteStudent;
@@ -16,12 +17,14 @@ namespace StudentRegisterApplication.View
         {
             Console.Clear();
             Color.Cyan("\t\t\t\t||\t\t Student Manager 1.0\t\t ||\n");
-            Color.Magenta(new string('-', 115));           
+            Color.Magenta(new string('-', 115));
             Color.White("\n  1. Create new\n");
             Color.White("  2. Edit existing\n");
             Color.White("  3. Delete\n");
-            Color.White("  4. Print all\n");
-            Color.White("  5. Quit\n");
+            Color.White("  4. Print Students with address and programming language\n");
+            Color.White("  5. Print Courses\n");
+            Color.White("  6. Set grades on students\n");
+            Color.White("  7. LogOut\n");
             Color.Magenta(new string('-', 115));
             Color.Magenta("\n-> ");
 
@@ -47,9 +50,15 @@ namespace StudentRegisterApplication.View
                 case "4":
                     _controller.ChangeMenu(new PrintAllStudentsMenu(_controller));
                     break;
-
                 case "5":
-                    Quit();                  
+                    // Print courses.
+                    break;
+                case "6":
+                    // Set grades on students. only teacher access
+                    break;
+
+                case "7":
+                    Quit();
                     break;
 
                 default:
@@ -60,7 +69,7 @@ namespace StudentRegisterApplication.View
 
         public void HandleCreateAccess()
         {
-            if(_controller.GetLoggedInSystemUser().UserRole.AddRemove)
+            if (_controller.GetLoggedInSystemUser().UserRole.AddRemove)
             {
                 _controller.ChangeMenu(new CreateStudentMenu(_controller));
             }
@@ -74,7 +83,7 @@ namespace StudentRegisterApplication.View
 
         public void HandleDeleteAccess()
         {
-            if(_controller.GetLoggedInSystemUser().UserRole.AddRemove)
+            if (_controller.GetLoggedInSystemUser().UserRole.AddRemove)
             {
                 _controller.ChangeMenu(new DeleteStudentMenu(_controller));
             }
@@ -99,10 +108,8 @@ namespace StudentRegisterApplication.View
                 _controller.ChangeMenu(new MainMenu(_controller));
             }
         }
-
         public void Quit()
         {
-            _controller.Quit();
             Console.WriteLine("\nGoodbye, have a nice day!");
             Environment.Exit(0);
         }
