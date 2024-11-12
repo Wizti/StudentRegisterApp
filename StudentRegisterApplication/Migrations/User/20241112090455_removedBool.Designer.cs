@@ -2,17 +2,20 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using StudentRegisterApplication.Data;
 
 #nullable disable
 
-namespace StudentRegisterApplication.Migrations
+namespace StudentRegisterApplication.Migrations.User
 {
-    [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(UserContext))]
+    [Migration("20241112090455_removedBool")]
+    partial class removedBool
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,83 +24,6 @@ namespace StudentRegisterApplication.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("StudentRegisterApplication.Model.Address", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("City")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("PostalCode")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Street")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("StudentId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("StudentId")
-                        .IsUnique();
-
-                    b.ToTable("Addresses");
-                });
-
-            modelBuilder.Entity("StudentRegisterApplication.Model.ProgrammingKnowledge", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Language")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SkillLevel")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("StudentId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("StudentId");
-
-                    b.ToTable("ProgrammingSkills");
-                });
-
-            modelBuilder.Entity("StudentRegisterApplication.Model.Student", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Students");
-                });
-
             modelBuilder.Entity("StudentRegisterApplication.Model.SystemUser", b =>
                 {
                     b.Property<int>("SystemUserId")
@@ -105,9 +31,6 @@ namespace StudentRegisterApplication.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SystemUserId"));
-
-                    b.Property<bool>("LoggedIn")
-                        .HasColumnType("bit");
 
                     b.Property<string>("PassWord")
                         .IsRequired()
@@ -179,28 +102,6 @@ namespace StudentRegisterApplication.Migrations
                     b.ToTable("Roles");
                 });
 
-            modelBuilder.Entity("StudentRegisterApplication.Model.Address", b =>
-                {
-                    b.HasOne("StudentRegisterApplication.Model.Student", "Student")
-                        .WithOne("Address")
-                        .HasForeignKey("StudentRegisterApplication.Model.Address", "StudentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Student");
-                });
-
-            modelBuilder.Entity("StudentRegisterApplication.Model.ProgrammingKnowledge", b =>
-                {
-                    b.HasOne("StudentRegisterApplication.Model.Student", "Student")
-                        .WithMany("ProgrammingKnowledge")
-                        .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Student");
-                });
-
             modelBuilder.Entity("StudentRegisterApplication.Model.SystemUser", b =>
                 {
                     b.HasOne("StudentRegisterApplication.Model.UserRole", "UserRole")
@@ -221,13 +122,6 @@ namespace StudentRegisterApplication.Migrations
                         .IsRequired();
 
                     b.Navigation("SystemUser");
-                });
-
-            modelBuilder.Entity("StudentRegisterApplication.Model.Student", b =>
-                {
-                    b.Navigation("Address");
-
-                    b.Navigation("ProgrammingKnowledge");
                 });
 #pragma warning restore 612, 618
         }

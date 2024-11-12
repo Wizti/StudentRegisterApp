@@ -8,11 +8,11 @@ using StudentRegisterApplication.Data;
 
 #nullable disable
 
-namespace StudentRegisterApplication.Migrations
+namespace StudentRegisterApplication.Migrations.User
 {
-    [DbContext(typeof(DataContext))]
-    [Migration("20241108072352_init")]
-    partial class init
+    [DbContext(typeof(UserContext))]
+    [Migration("20241112081101_user")]
+    partial class user
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -23,83 +23,6 @@ namespace StudentRegisterApplication.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("StudentRegisterApplication.Model.Address", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("City")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("PostalCode")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Street")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("StudentId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("StudentId")
-                        .IsUnique();
-
-                    b.ToTable("Addresses");
-                });
-
-            modelBuilder.Entity("StudentRegisterApplication.Model.ProgrammingKnowledge", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Language")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SkillLevel")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("StudentId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("StudentId");
-
-                    b.ToTable("ProgrammingSkills");
-                });
-
-            modelBuilder.Entity("StudentRegisterApplication.Model.Student", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Students");
-                });
 
             modelBuilder.Entity("StudentRegisterApplication.Model.SystemUser", b =>
                 {
@@ -182,28 +105,6 @@ namespace StudentRegisterApplication.Migrations
                     b.ToTable("Roles");
                 });
 
-            modelBuilder.Entity("StudentRegisterApplication.Model.Address", b =>
-                {
-                    b.HasOne("StudentRegisterApplication.Model.Student", "Student")
-                        .WithOne("Address")
-                        .HasForeignKey("StudentRegisterApplication.Model.Address", "StudentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Student");
-                });
-
-            modelBuilder.Entity("StudentRegisterApplication.Model.ProgrammingKnowledge", b =>
-                {
-                    b.HasOne("StudentRegisterApplication.Model.Student", "Student")
-                        .WithMany("ProgrammingKnowledge")
-                        .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Student");
-                });
-
             modelBuilder.Entity("StudentRegisterApplication.Model.SystemUser", b =>
                 {
                     b.HasOne("StudentRegisterApplication.Model.UserRole", "UserRole")
@@ -224,13 +125,6 @@ namespace StudentRegisterApplication.Migrations
                         .IsRequired();
 
                     b.Navigation("SystemUser");
-                });
-
-            modelBuilder.Entity("StudentRegisterApplication.Model.Student", b =>
-                {
-                    b.Navigation("Address");
-
-                    b.Navigation("ProgrammingKnowledge");
                 });
 #pragma warning restore 612, 618
         }

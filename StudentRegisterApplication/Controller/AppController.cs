@@ -10,16 +10,21 @@ namespace StudentRegisterApplication.Controller
     {
         private MenuBase _menu;
         private readonly StudentRepository _studentRepository;
+        private readonly SystemUserRepository _systemUserRepository;
+        private bool _isUserLoggedIn = false;
+        private SystemUser _currentUser;
+        
 
-        public AppController(StudentRepository studentRepository)
+        public AppController(StudentRepository studentRepository, SystemUserRepository userRepository)
         {
             _menu = new MainMenu(this);
             _studentRepository = studentRepository;
+            _systemUserRepository = userRepository;
         }
 
         public void Run()
         {
-            if (!_studentRepository.IsAnyLoggedIn())
+            if (!_isUserLoggedIn)
             {
                 _menu = new LoginMenu(this);
                 _menu.ShowMenu();
@@ -35,15 +40,16 @@ namespace StudentRegisterApplication.Controller
 
         public bool HandleLogin(string username, string password)
         {
-            SystemUser user = _studentRepository.GetAllSystemUsers().Where(u => u.UserName == username).FirstOrDefault();
+            SystemUser user = _systemUserRepository.GetAllSystemUsers().Where(u => u.UserName == username).FirstOrDefault();
             if (user == null)
             {
                 return false;
             }
+  
             if (user.PassWord == password)
             {
-                user.LoggedIn = true;
-                _studentRepository.Update(user);
+                _isUserLoggedIn = true;
+                _currentUser = user; 
             }
             return true;
         }
@@ -115,19 +121,8 @@ namespace StudentRegisterApplication.Controller
         }
 
         public SystemUser GetLoggedInSystemUser()
-        {
-            return _studentRepository.GetSystemUser();
-        }
-
-        public void Quit()
-        {
-            var users = _studentRepository.GetAllSystemUsers().Where(l => l.LoggedIn);
-
-            foreach (var user in users)
-            {
-                user.LoggedIn = false;
-                _studentRepository.Update(user);
-            }
+        {           
+            return _systemUserRepository.GetSystemUser(_currentUser.SystemUserId);
         }
     }
 }

@@ -6,11 +6,11 @@ namespace StudentRegisterApplication.Repository
 {
     internal class StudentRepository
     {
-        private readonly DataContext _context;
+        private readonly StudentContext _context;
 
         public StudentRepository()
         {
-            _context = new DataContext();
+            _context = new StudentContext();
         }
 
         public void Create(Student student)
@@ -31,11 +31,6 @@ namespace StudentRegisterApplication.Repository
             Save();
         }
 
-        public void Update(SystemUser user)
-        {
-            _context.Update(user);
-            Save();
-        }
         public List<Student> GetByPhrase(string phrase)
         {
             return _context.Students.Where(f => f.FirstName.Contains(phrase) || f.LastName.Contains(phrase) || f.Address.City.Contains(phrase) || f.Address.Street.Contains(phrase) || f.ProgrammingKnowledge.Any(k => k.Language.Contains(phrase))).ToList();
@@ -54,21 +49,7 @@ namespace StudentRegisterApplication.Repository
         {
             return [.. _context.Students.Include(a => a.Address).Include(p => p.ProgrammingKnowledge) ];
         }
-
-        public List<SystemUser> GetAllSystemUsers()
-        {
-            return [.. _context.SystemUsers ];
-        }
-
-        public bool IsAnyLoggedIn()
-        {
-            return _context.SystemUsers.Any(s => s.LoggedIn);
-        }
-
-        public SystemUser GetSystemUser()
-        {
-            return _context.SystemUsers.Where(l => l.LoggedIn).Include(u => u.UserRole).First();
-        }
+        
         public void Save()
         {
             _context.SaveChanges();
